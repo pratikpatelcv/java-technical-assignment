@@ -27,10 +27,19 @@ class BasketTest {
         assertEquals(new BigDecimal(expectedTotal), basket.total());
     }
     
-    @DisplayName("basket with buy 1 get 1 free discount provides its total value when containing...")
+    @DisplayName("basket with no matching discount provides its total value when containing...")
     @MethodSource("basketProvidesTotalValue")
     @ParameterizedTest(name = "{0}")
-    void basketWithDiscountProvidesTotalValue(String description, String expectedTotal, Iterable<Item> items) {
+    void basketWithNoDiscountProvidesTotalValue(String description, String expectedTotal, Iterable<Item> items) {
+        final Basket basket = new Basket(List.of(buy1Get1FreeMilkDiscount()));
+        items.forEach(basket::add);
+        assertEquals(new BigDecimal(expectedTotal), basket.total());
+    }
+    
+    @DisplayName("basket with matching buy 1 get 1 free discount provides its total value when containing...")
+    @MethodSource("basketWithDiscountableItemsProvidesTotalValue")
+    @ParameterizedTest(name = "{0}")
+    void basketWithMatchingDiscountProvidesTotalValue(String description, String expectedTotal, Iterable<Item> items) {
         final Basket basket = new Basket(List.of(buy1Get1FreeMilkDiscount()));
         items.forEach(basket::add);
         assertEquals(new BigDecimal(expectedTotal), basket.total());
@@ -45,6 +54,18 @@ class BasketTest {
                 multipleItemsPricedByWeight()
         );
     }
+    
+    static Stream<Arguments> basketWithDiscountableItemsProvidesTotalValue() {
+        return Stream.of(
+                noItems(),
+                aSingleItemPricedPerUnit(),
+                multipleItemsPricedPerUnit(),
+                aSingleItemPricedByWeight(),
+                multipleItemsPricedByWeight(),
+                discountedIItemsPricedPerUnit()
+        );       
+    }
+   
     
 
     private static Arguments aSingleItemPricedByWeight() {
@@ -70,6 +91,10 @@ class BasketTest {
         return Arguments.of("no items", "0.00", Collections.emptyList());
     }
     
+    private static Arguments discountedIItemsPricedPerUnit() {
+        return Arguments.of("discounted items", "2.04",
+                Arrays.asList(aPackOfDigestives(), aPintOfMilk(), aPintOfMilk()));
+    }
 
     private static Item aPintOfMilk() {
         return new ProductByUnit("milk", new BigDecimal("0.49")).oneOf();
