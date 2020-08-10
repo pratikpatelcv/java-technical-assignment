@@ -13,7 +13,7 @@ public class Product {
         this.name = name;
     }
 
-    BigDecimal pricePerUnit() {
+    public BigDecimal pricePerUnit() {
         return pricePerUnit;
     }
 
