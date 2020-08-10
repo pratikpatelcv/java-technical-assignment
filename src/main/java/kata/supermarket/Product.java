@@ -1,29 +1,18 @@
 package kata.supermarket;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Product {
+public abstract class Product {
 
-    private final BigDecimal pricePerUnit;
     private final String name;
 
-    public Product(final String name, final BigDecimal pricePerUnit) {
-        this.pricePerUnit = pricePerUnit;
+    public Product(final String name) {
         this.name = name;
-    }
-
-    public BigDecimal pricePerUnit() {
-        return pricePerUnit;
-    }
-
-    public Item oneOf() {
-        return new ItemByUnit(this);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, pricePerUnit);
+        return Objects.hash(name);
     }
 
     @Override
@@ -33,7 +22,7 @@ public class Product {
         if (!(obj instanceof Product))
             return false;
         Product other = (Product) obj;
-        return Objects.equals(name, other.name) && Objects.equals(pricePerUnit, other.pricePerUnit);
+        return Objects.equals(name, other.name);
     }
 
 }

@@ -4,16 +4,16 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import kata.supermarket.Item;
-import kata.supermarket.Product;
+import kata.supermarket.ProductByUnit;
 
 public class Buy1Get1Free implements Discount {
 
     /* TODO: Change constant name, it doesn't make the most sense... */
     private static final int DISCOUNT_DIVIDER = 2;
 
-    private final Product product;
+    private final ProductByUnit product;
 
-    public Buy1Get1Free(final Product product) {
+    public Buy1Get1Free(final ProductByUnit product) {
         this.product = product;
     }
 

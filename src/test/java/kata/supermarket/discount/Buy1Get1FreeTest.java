@@ -10,29 +10,29 @@ import java.util.List;
 import org.junit.Test;
 
 import kata.supermarket.Item;
-import kata.supermarket.Product;
+import kata.supermarket.ProductByUnit;
 
 public class Buy1Get1FreeTest {
 
     @Test
     public void applyShouldReturnZeroForEmptyList() {
-        Buy1Get1Free discount = new Buy1Get1Free(new Product("milk", new BigDecimal("0.49")));
+        Buy1Get1Free discount = new Buy1Get1Free(new ProductByUnit("milk", new BigDecimal("0.49")));
 
         assertEquals(BigDecimal.ZERO, discount.apply(Collections.emptyList()));
     }
 
     @Test
     public void applyShouldReturnZeroForNullList() {
-        Buy1Get1Free discount = new Buy1Get1Free(new Product("milk", new BigDecimal("0.49")));
+        Buy1Get1Free discount = new Buy1Get1Free(new ProductByUnit("milk", new BigDecimal("0.49")));
 
         assertEquals(BigDecimal.ZERO, discount.apply(null));
     }
 
     @Test
     public void applyShouldReturnZeroForNonMatchingList() {
-        Buy1Get1Free discount = new Buy1Get1Free(new Product("milk", new BigDecimal("0.49")));
+        Buy1Get1Free discount = new Buy1Get1Free(new ProductByUnit("milk", new BigDecimal("0.49")));
 
-        Product digestives = new Product("digestives", new BigDecimal("0.33"));
+        ProductByUnit digestives = new ProductByUnit("digestives", new BigDecimal("0.33"));
         List<Item> items = List.of(digestives.oneOf());
 
         assertEquals(BigDecimal.ZERO, discount.apply(items));
@@ -40,7 +40,7 @@ public class Buy1Get1FreeTest {
 
     @Test
     public void applyShouldReturnOneDiscountValueForMatchingListOfTwoItems() {
-        Product milk = new Product("milk", new BigDecimal("0.49"));
+        ProductByUnit milk = new ProductByUnit("milk", new BigDecimal("0.49"));
         Buy1Get1Free discount = new Buy1Get1Free(milk);
 
         List<Item> items = List.of(milk.oneOf(), milk.oneOf());
@@ -50,7 +50,7 @@ public class Buy1Get1FreeTest {
 
     @Test
     public void applyShouldReturnOneDiscountValueForMatchingListOfThreeItems() {
-        Product milk = new Product("milk", new BigDecimal("0.49"));
+        ProductByUnit milk = new ProductByUnit("milk", new BigDecimal("0.49"));
         Buy1Get1Free discount = new Buy1Get1Free(milk);
 
         List<Item> items = List.of(milk.oneOf(), milk.oneOf(), milk.oneOf());
@@ -60,7 +60,7 @@ public class Buy1Get1FreeTest {
 
     @Test
     public void applyShouldReturnThreeDiscountValuesForMatchingListOfSevenItems() {
-        Product milk = new Product("milk", new BigDecimal("0.49"));
+        ProductByUnit milk = new ProductByUnit("milk", new BigDecimal("0.49"));
         Buy1Get1Free discount = new Buy1Get1Free(milk);
 
         List<Item> items = new ArrayList<>();
@@ -72,9 +72,9 @@ public class Buy1Get1FreeTest {
     }
 
     @Test
-    public void applyShouldReturnOnlyMatchingProductDiscountValue() {
-        Product milk = new Product("milk", new BigDecimal("0.49"));
-        Product digestives = new Product("digestives", new BigDecimal("0.33"));
+    public void applyShouldReturnOnlyMatchingProductByUnitDiscountValue() {
+        ProductByUnit milk = new ProductByUnit("milk", new BigDecimal("0.49"));
+        ProductByUnit digestives = new ProductByUnit("digestives", new BigDecimal("0.33"));
         Buy1Get1Free discount = new Buy1Get1Free(milk);
 
         List<Item> items = List.of(milk.oneOf(), milk.oneOf(), digestives.oneOf(), digestives.oneOf());
