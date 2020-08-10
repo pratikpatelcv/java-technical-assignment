@@ -12,7 +12,7 @@ import org.junit.Test;
 import kata.supermarket.Item;
 import kata.supermarket.Product;
 
-public class Buy1Get1FreeDiscountTest {
+public class Buy1Get1FreeTest {
 
     @Test
     public void applyShouldReturnZeroForEmptyList() {

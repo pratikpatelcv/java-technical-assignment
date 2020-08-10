@@ -1,16 +1,20 @@
 package kata.supermarket;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import kata.supermarket.discount.Buy1Get1Free;
+import kata.supermarket.discount.Discount;
 
 class BasketTest {
 
@@ -18,7 +22,16 @@ class BasketTest {
     @MethodSource
     @ParameterizedTest(name = "{0}")
     void basketProvidesTotalValue(String description, String expectedTotal, Iterable<Item> items) {
-        final Basket basket = new Basket();
+        final Basket basket = new Basket(Collections.emptyList());
+        items.forEach(basket::add);
+        assertEquals(new BigDecimal(expectedTotal), basket.total());
+    }
+    
+    @DisplayName("basket with buy 1 get 1 free discount provides its total value when containing...")
+    @MethodSource("basketProvidesTotalValue")
+    @ParameterizedTest(name = "{0}")
+    void basketWithDiscountProvidesTotalValue(String description, String expectedTotal, Iterable<Item> items) {
+        final Basket basket = new Basket(List.of(buy1Get1FreeMilkDiscount()));
         items.forEach(basket::add);
         assertEquals(new BigDecimal(expectedTotal), basket.total());
     }
@@ -32,6 +45,7 @@ class BasketTest {
                 multipleItemsPricedByWeight()
         );
     }
+    
 
     private static Arguments aSingleItemPricedByWeight() {
         return Arguments.of("a single weighed item", "1.25", Collections.singleton(twoFiftyGramsOfAmericanSweets()));
@@ -55,6 +69,7 @@ class BasketTest {
     private static Arguments noItems() {
         return Arguments.of("no items", "0.00", Collections.emptyList());
     }
+    
 
     private static Item aPintOfMilk() {
         return new Product("milk", new BigDecimal("0.49")).oneOf();
@@ -79,4 +94,10 @@ class BasketTest {
     private static Item twoHundredGramsOfPickAndMix() {
         return aKiloOfPickAndMix().weighing(new BigDecimal(".2"));
     }
+    
+    private static Discount buy1Get1FreeMilkDiscount()
+    {
+        return new Buy1Get1Free(aPintOfMilk().product());
+    }
+    
 }
