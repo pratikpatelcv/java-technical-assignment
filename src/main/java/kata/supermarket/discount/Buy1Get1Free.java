@@ -8,18 +8,18 @@ import kata.supermarket.Product;
 
 public class Buy1Get1Free implements Discount {
 
-	private final Product product;
+    private final Product product;
 
-	public Buy1Get1Free(final Product product) {
-		this.product = product;
-	}
+    public Buy1Get1Free(final Product product) {
+        this.product = product;
+    }
 
-	@Override
-	public BigDecimal apply(List<Item> items) {
-		if (items == null || items.isEmpty()) {
-			return BigDecimal.ZERO;
-		}
+    @Override
+    public BigDecimal apply(List<Item> items) {
+        if (items == null || items.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
 
-		return null;
-	}
+        return null;
+    }
 }
